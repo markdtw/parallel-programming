@@ -1,0 +1,23 @@
+echo Starting...
+echo =================================
+echo mandelbrot set sequential version
+gcc sequential_mandelbrot.c -lX11 -lrt
+./a.out
+echo =============================
+echo mandelbrot set OpenMP version
+gcc openmp_mandelbrot.c -lX11 -lrt -fopenmp
+./a.out
+echo =====================================
+echo mandelbrot set dynamic OpenMP version
+gcc openmp_dynamic_mandelbrot.c -lX11 -lrt -fopenmp
+./a.out
+echo ==============================
+echo mandelbrot set pthread version
+gcc pthread_mandelbrot.c -lX11 -lrt -lpthread
+./a.out
+echo ======================================
+echo mandelbrot set dynamic pthread version
+gcc pthread_dynamic_mandelbrot.c -lX11 -lrt -lpthread
+./a.out
+echo ======================================
+echo End
