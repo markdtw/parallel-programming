@@ -32,60 +32,12 @@ __global__ void kernel_dis (int *inarr, matrix *matdis, int n, int m) {
             dis[tid] = 0;
         __syncthreads();
 
-        /*
-           if (tid==0) {
-           sum = 0;
-           int k;
-           for (k=0; k<threadsperblock; k++)
-           sum+=dis[k];
-
-           matdis[i*m+j].dis += sum;
-           matdis[j*m+i].dis = matdis[i*m+j].dis;
-           }
-         */
-
         for (l=threadsperblock/2; l>0; l/=2) {
             if (tid<l)
                 dis[tid] += dis[tid+l];
             __syncthreads();
         }
 
-        /*
-           if (tid<512) {
-           dis[tid] += dis[tid+512];
-           __syncthreads();
-           }
-           if (tid<256) {
-           dis[tid] += dis[tid+256];
-           __syncthreads();
-           }
-           if (tid<128) {
-           dis[tid] += dis[tid+128];
-           __syncthreads();
-           }
-           if (tid<64) {
-           dis[tid] += dis[tid+64];
-           __syncthreads();
-           }
-           if (tid<32) {
-           dis[tid] += dis[tid+32];
-           }
-           if (tid<16) {
-           dis[tid] += dis[tid+16];
-           }
-           if (tid<8) {
-           dis[tid] += dis[tid+8];
-           }
-           if (tid<4) {
-           dis[tid] += dis[tid+4];
-           }
-           if (tid<2) {
-           dis[tid] += dis[tid+2];
-           }
-           if (tid<1) {
-           dis[tid] += dis[tid+1];
-           }
-         */
         if (tid==0) {
             matdis[i*m+j].dis += dis[0];
             matdis[j*m+i].dis = matdis[i*m+j].dis;
@@ -179,7 +131,6 @@ int main (int argc, char **argv) {
         printf("\n");
     }
 
-
     if (M==16384)
         printf("LARGE:%f\n", elapsedTime/1000);
     else if (M==4096)
@@ -188,14 +139,6 @@ int main (int argc, char **argv) {
         printf("SMALL:%f\n", elapsedTime/1000);
     else
         printf("EXECUTION_TIME:%f\n", elapsedTime/1000);
-
-    /*
-       for (i=0; i<M; i++) {
-       for (j=0; j<M; j++)
-       fprintf(out, "%d ", matdis[i*M+j].dis);
-       fprintf(out, "\n");
-       }
-     */
 
     fclose(cudaerr);	
     fclose(out);
