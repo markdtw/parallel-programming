@@ -161,7 +161,7 @@ void *parallelv (void *t) {
 }
 int main (int argc, char **argv) {
     if (argc!=8 && argc!=12) {
-        printf("sage: ./a.out #threads m T t FILE θ enable/disable xmin ymin len Len\nExiting...\n");
+        printf("usage: ./a.out #threads m T t FILE θ enable/disable xmin ymin len Len\nExiting...\n");
         exit(1);
     }
     THREADS = atoi(argv[1]);
