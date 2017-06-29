@@ -6,7 +6,7 @@
 #include <time.h>
 #include <math.h>
 #define GCONST	6.67384e-11
-#define PI		3.1415926
+#define PI	3.1415926
 #define WHITE	0xFFFFFF
 #define BLACK	0x000000
 typedef struct {

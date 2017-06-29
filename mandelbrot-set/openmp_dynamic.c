@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <math.h>
+#include <unistd.h>
 typedef struct complexType{
     double real, imag;
 }Compl;

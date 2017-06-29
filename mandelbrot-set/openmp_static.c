@@ -1,12 +1,14 @@
+#include <omp.h>
 #include <X11/Xlib.h>
 #include <stdio.h>
 #include <time.h>
-
+#include <math.h>
+#include <unistd.h>
 typedef struct complexType{
     double real, imag;
 }Compl;
 
-int main (int argc, char **argv) {
+int main (void) {
     Display *display;
     Window window;		// initialization for a window
     int screen;			// which screen
@@ -32,7 +34,7 @@ int main (int argc, char **argv) {
     int border_width = 0;
 
     /* create window */
-    window = XCreateSimpleWindow(display, RootWindow(display, screen), x, y, 
+    window = XCreateSimpleWindow(display, RootWindow(display, screen), x, y,
         width, height, border_width,
             BlackPixel(display, screen), WhitePixel(display, screen));
 
@@ -51,17 +53,21 @@ int main (int argc, char **argv) {
     XMapWindow(display, window);
     XSync(display, 0);
 
-    /* draw points */
-    Compl z, c;
-    int repeats;
-    double temp, lengthsq;
-
     /* record time here */
-    clock_t t;
-    t = clock();
+    struct timespec t1, t2;
+    int result;
 
+    omp_lock_t lock;
+    omp_init_lock(&lock);
     int i, j;
+
+    clock_gettime(CLOCK_REALTIME, &t1);
+    #pragma omp parallel for private(j)
     for (i=0; i<width; i++) {
+        /* draw points */
+        Compl z, c;
+        int repeats;
+        double temp, lengthsq;
         for (j=0; j<height; j++) {
             z.real = 0.0;
             z.imag = 0.0;
@@ -78,15 +84,17 @@ int main (int argc, char **argv) {
                 lengthsq = z.real*z.real + z.imag*z.imag;
                 repeats++;
             }
-
+            omp_set_lock(&lock);
             XSetForeground(display, gc, 1024*1024*(repeats%256));
             XDrawPoint(display, window, gc, i, j);
+            omp_unset_lock(&lock);
         }
     }
 
     /* end of record */
-    t = clock() - t;
-    printf("It took %.5f seconds to finish sequential calculation.\n", ((float)t)/CLOCKS_PER_SEC);
+    clock_gettime(CLOCK_REALTIME, &t2);
+    double timedif = 1000000*(t2.tv_sec-t1.tv_sec)+(t2.tv_nsec-t1.tv_nsec)/1000;
+    printf("It took %.5lf seconds to finish OpenMP calculation.\n", timedif/1000000);
     printf("Going into sleep...\n");
 
     XFlush(display);

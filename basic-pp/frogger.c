@@ -209,7 +209,7 @@ void *draw_kb (void *t) {
     while (halt==0) {
         XNextEvent(display, &ev);
         switch(ev.type) {
-            case KeyPress: 
+            case KeyPress: {
                 char buf[25] = {0};
                 int len;
                 KeySym keysym;
@@ -268,9 +268,11 @@ void *draw_kb (void *t) {
                     }
                 }
                 break;
+            }
         }
     }
 }
+
 int main (int argc, char **argv) {
 
     int i;

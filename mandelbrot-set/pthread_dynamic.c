@@ -2,10 +2,12 @@
 #include <pthread.h>
 #include <stdio.h>
 #include <time.h>
+#include <unistd.h>
 
 typedef struct complexType{
     double real, imag;
 }Compl;
+
 pthread_mutex_t mutex, ptr_mutex;
 Display *display;
 GC gc;
