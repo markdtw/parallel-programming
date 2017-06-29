@@ -2,15 +2,15 @@
 Basic OpenMP, Pthread and CUDA examples
 
 ## Compile
-`gpcc`: script to compile OpenMP/Pthread program.
+`gpcc`: script to compile OpenMP/Pthread program.<br>
 `nvcc`: script to compile CUDA program.
 
 ### basic-pp
-Contains basic introduction to the threading tools including OpenMP and Pthread
+Contains basic introduction to the threading tools including OpenMP and Pthread.<br>
 `frogger.c`: the classic frogger game written in C/Pthread
   
 ### mandelbrot-set
-Classic pp problem. A particular set of complex numbers which has a highly convoluted fractal boundary when plotted.
+Classic pp problem. A particular set of complex numbers which has a highly convoluted fractal boundary when plotted.<br>
 `run_all`: the script to run five versions of the implementation.
   
 ### CUDA
